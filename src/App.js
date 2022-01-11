@@ -1,21 +1,11 @@
 import React, {useState} from 'react';
 import './App.css';
 
-function App() { // React는 jsx 사용
+function App() {
+  let [title, setTitle] = useState(['글제목1', '글제목2', '글제목3']);
+  let [modal, setModal] = useState(false);
 
-  // var [a, b] = [10, 100]; // a에는 10, b에는 100을 담기
-  let [title, setTitle] = useState (['강남 맛집 후기', '강남 카페 추천']);
-  let [like, setLike] = useState(0);
-  let [hate, setHate] = useState(0);
-
-  // function titleChange() {
-  //   var newTitle = [...title];
-  //   newTitle[0] = '신촌 맛집 후기';
-  //   setTitle(newTitle);
-  // }
-
-  {/* Modal */}
-  let [modal, modal변경] = useState(false);
+  let [누른제목, 누른제목변경] = useState(0);
 
   return (
     <div className="App">
@@ -23,40 +13,34 @@ function App() { // React는 jsx 사용
         <div>개발 블로그</div>
       </div>
 
-      <div className="list">
-        <h3> {title[0]} 
-          <span onClick={()=> {setLike(like+1)}}> 👍 </span> {like} 
-          <span onClick={()=> {setHate(hate+1)}}> 👎 </span> {hate} 
-        </h3>
-        <p> 2월 17일 발행</p>
-        <hr/>
-      </div>
+      {
+        title.map(function(element, i){
+          return (
+            <div onClick={()=>{누른제목변경(i)}}>{element}</div>
+          )
+        })
+      }
 
-      <div className="list">
-        <h3> {title[1]} 
-        </h3>
-        <p> 2월 17일 발행</p>
-        <hr/>
-      </div>
+      <button onClick={()=>{누른제목변경(0)}}>1</button>
+      <button onClick={()=>{누른제목변경(1)}}>2</button>
+      <button onClick={()=>{누른제목변경(2)}}>3</button>
 
-      {/* Modal */}
-      <button onClick={ ()=>{ modal변경(!modal) } }> 열기닫기 </button>
-      { 
-         modal === true 
-         ? <Modal />
-         : null
+      {/* button */}
+      <button onClick={() => {setModal(!modal)}}>열고닫기</button>
+      {
+        modal === true
+        ? <Modal title={title} 누른제목={누른제목}></Modal>
+        : null
       }
 
     </div> 
   );
 }
 
-function Modal() {
-  return (
+function Modal(props) {
+  return(
     <div className="modal">
-      <h2> 제목 </h2>
-      <p> 날짜 </p>
-      <p> 상세내용 </p>
+      {props.title[props.누른제목]}
     </div>
   )
 }
